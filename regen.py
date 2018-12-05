@@ -195,13 +195,23 @@ def inspect_eqn(eq):
             for func_arg in arg.args:
                 domain_vars.add(func_arg)
         if isinstance(arg, Derivative):
-            numerator, denominator = arg.args
+            #print("args         =", arg.args)
+            numerator    = arg.args[0]
+            denominators = arg.args[1:]
+            #print("numerator    =", numerator)
+            #print("              ", type(numerator))
+            #print("denominators =", denominators)
+            #print("                tuple of ", type(denominators[0]))
             for term in extract_funcs(numerator):
                 diff_funcs.add(term)
-            if isinstance(denominator, Tuple):
-                diff_vars.add(denominator[0])
+            if isinstance(denominators, tuple):
+                for denominator in denominators:
+                    if isinstance(denominator, Tuple):
+                        diff_vars.add(denominator[0])
+                    else:
+                        diff_vars.add(denominator)
             else:
-                diff_vars.add(denominator)
+                diff_vars.add(denominators)
 
     # Convert data sets to tuples and store as a dictionary
     result = {"symbols"                   : tuple(symbols    ),
