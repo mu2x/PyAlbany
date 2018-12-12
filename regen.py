@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
 # Import the classes needed from sympy
-from sympy import Tuple, Symbol, Function, Expr, Eq, Derivative
+from sympy import Tuple, Symbol, IndexedBase, Idx, Function, Expr, Eq, Derivative
 
 # Import the functions needed from sympy
-from sympy import integrate, simplify, preorder_traversal
+from sympy import summation, integrate, simplify, preorder_traversal
 
 ################################################################################
 
@@ -104,6 +104,8 @@ def weak_form(eqs, v):
             o2_term  = ibp[2]
             o1_terms = -ibp[0] - ibp[1]
             result[i] = result[i].subs(o2_term, o1_terms)
+        # atteach the inspection to each result
+        # result[i].inspection = insp
 
     # Return the results
     if num_eq == 1:
@@ -190,18 +192,15 @@ def inspect_eqn(eq):
     for arg in preorder_traversal(eq):
         if isinstance(arg, Symbol):
             symbols.add(arg)
+        #if isinstance(arg, IndexedBase):
+        #    symbols.add(arg)
         if isinstance(arg, Function):
             functions.add(arg)
             for func_arg in arg.args:
                 domain_vars.add(func_arg)
         if isinstance(arg, Derivative):
-            #print("args         =", arg.args)
             numerator    = arg.args[0]
             denominators = arg.args[1:]
-            #print("numerator    =", numerator)
-            #print("              ", type(numerator))
-            #print("denominators =", denominators)
-            #print("                tuple of ", type(denominators[0]))
             for term in extract_funcs(numerator):
                 diff_funcs.add(term)
             if isinstance(denominators, tuple):
@@ -278,3 +277,74 @@ def inspect_eqns(*args):
 
     # Return the results
     return result
+
+################################################################################
+
+def galerkin(expr, test_func, basis):
+    """
+    Given a set of sympy.Expr objects, return a new set of sympy.Expr objects in
+    which substitutions have been made that are consistent with a Galerkin
+    approximation.
+
+    Arguments:
+        expr         - (in) a single sympy.Expr object, or a sequence of
+                       sympy.Expr objects
+        test_func    - (in) it is assumed that the expr are expressions obtained
+                       from the weak_form() function, using the same test
+                       function specified here
+        basis        - (in) a sympy.Function object that represents the basis
+                       functions for the Galerkin approximation.  Should be
+                       constructed without arguments: this function will add
+                       them
+
+    Returns:
+        one or more sympy.Expr objects
+            A single expression will be returned as a sympy.Expr; multiple
+            expressions wil be returned as a tuple of sympy.Expr
+    """
+
+    # Ensure exprs is always a tuple
+    exprs = expr
+    if isinstance(exprs, Expr):
+        exprs = [exprs]
+    else:
+        exprs = list(expr)
+    num_expr = len(exprs)
+
+    # Define our indexes
+    i = Idx('i')
+    j = Idx('j')
+    N = Symbol('N', integer=True)
+
+    # Obtained the non-test differentiated functions
+    insp = inspect_eqns(*exprs)
+    diff_funcs = list(insp["differentiated functions"])
+    try:
+        diff_funcs.remove(test_func)
+    except ValueError:
+        pass
+
+    # Obtain the domain variables
+    x = insp["domain variables"]
+    if len(x) == 1:
+        x = x[0]
+    else:
+        raise ValueError("Only 1D problems supported. So far!")
+
+    # Apply the Galerkin approximation
+    for k in range(num_expr):
+        exprs[k] = exprs[k].subs(test_func, basis(j,x))
+        for func in diff_funcs:
+            name   = str(func)
+            paren  = name.find('(')
+            name   = name[:paren]
+            func_i = IndexedBase(name)[i]
+            exprs[k] = exprs[k].subs(func, summation(func_i * basis(i,x), (i,0,N-1)))
+        exprs[k] = exprs[k].doit()
+
+    # Return the results
+    if num_expr == 1:
+        exprs = exprs[0]
+    else:
+        exprs = tuple(exprs)
+    return exprs
