@@ -1,10 +1,11 @@
 #! /usr/bin/env python
 
 # Import the classes needed from sympy
-from sympy import Tuple, Symbol, IndexedBase, Idx, Function, Expr, Eq, Derivative
+from sympy import Tuple, Symbol, IndexedBase, Idx, Function, Expr, Eq, \
+                  Derivative, Integral
 
 # Import the functions needed from sympy
-from sympy import summation, integrate, simplify, preorder_traversal
+from sympy import summation, integrate, simplify, preorder_traversal, pprint
 
 ################################################################################
 
@@ -303,7 +304,7 @@ def galerkin(expr, test_func, basis):
             expressions wil be returned as a tuple of sympy.Expr
     """
 
-    # Ensure exprs is always a tuple
+    # Ensure exprs is always a list
     exprs = expr
     if isinstance(exprs, Expr):
         exprs = [exprs]
@@ -348,3 +349,62 @@ def galerkin(expr, test_func, basis):
     else:
         exprs = tuple(exprs)
     return exprs
+
+################################################################################
+
+def quadrature(expr):
+
+    # Obtain the functions from the expression
+    functions = set()
+    for arg in preorder_traversal(expr):
+        if isinstance(arg, Function):
+            functions.add(arg)
+
+    # Substitute function argument x_k for x
+    k = Idx('k')
+    x_k = IndexedBase('x')[k]
+    for func in functions:
+        args = func.args
+        x = args[1]
+        new_func = func.subs(x, x_k)
+        expr = expr.subs(func, new_func)
+
+    # Obtain the integrals from expression
+    integrals = set()
+    for arg in preorder_traversal(expr):
+        if isinstance(arg, Integral):
+            integrals.add(arg)
+
+    # Substitute quadrature summation for integrals
+    w_k = IndexedBase('w')[k]
+    N_k = Symbol('N_k', integer=True)
+    for integ in integrals:
+        args = integ.args
+        new_sum = summation(args[0]*w_k, (k,0,N_k-1))
+        expr = expr.subs(integ, new_sum)
+
+    return expr
+
+################################################################################
+
+def substitute_derivatives(expr):
+
+    # Obtain the derivatives from the expression
+    derivatives = set()
+    for arg in preorder_traversal(expr):
+        if isinstance(arg, Derivative):
+            derivatives.add(arg)
+
+    # Substitute a simple function that represents a derivative
+    for d in derivatives:
+        num = d.args[0]
+        args = num.args
+        den = d.args[1]
+        numstr = str(num)
+        denstr = str(den[0])
+        ind = numstr.find('(')
+        numstr = numstr[:ind]
+        deriv_func = Function(numstr + "_" + denstr)(*args)
+        expr = expr.subs(d, deriv_func)
+
+    return expr
