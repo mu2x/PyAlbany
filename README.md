@@ -13,7 +13,7 @@ an environment for the REGen project:
     $ conda create --name regen
     $ . activate regen
     (regen) $ conda install sympy
-    ...
     (regen) $ conda install jupyter
-    ...
     (regen) $ conda install jupyter_contrib_nbextensions
+    (regen) $ jupyter nbextension install --py latex_envs
+    (regen) $ jupyter nbextension enable --py latex_envs
