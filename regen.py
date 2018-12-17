@@ -2,7 +2,7 @@
 
 # Import the classes needed from sympy
 from sympy import Tuple, Symbol, IndexedBase, Idx, Function, Expr, Eq, \
-                  Derivative, Integral
+                  Derivative, Integral, Subs
 
 # Import the functions needed from sympy
 from sympy import summation, integrate, simplify, preorder_traversal, pprint
@@ -316,9 +316,8 @@ def galerkin(expr, test_func, basis):
     """
 
     # Ensure exprs is always a list
-    exprs = expr
-    if isinstance(exprs, Expr):
-        exprs = [exprs]
+    if isinstance(expr, Expr):
+        exprs = [expr]
     else:
         exprs = list(expr)
     num_expr = len(exprs)
@@ -363,24 +362,62 @@ def galerkin(expr, test_func, basis):
 
 ################################################################################
 
-def my_subs(expr, old_sub_expr, new_sub_expr):
-    if expr == old_sub_expr:
-        return new_sub_expr
+def my_subs(expr, old, new):
+    """
+    A local implementation of sympy substitution, which addresses a bug in sympy
+    where certain substitutions within a summation do not appear to work.  To
+    this, I have also added specific behavior where a substitution gets
+    implemented in the numerator of a derivative, but not the denominator.
+
+    Arguments:
+        expr  - (in) the expression to perform substitions on
+        old   - (in) the sub-expression to be replaced
+        new   - (in) the sub-expression to be inserted
+
+    Returns:
+        A new expression with substitutions performed.
+    """
+
+    if expr == old:
+        return new
     elif expr.args == ():
         return expr
     elif isinstance(expr,Derivative):
         numer = expr.args[0]
         denom = expr.args[1:]
-        return Derivative(my_subs(numer, old_sub_expr, new_sub_expr), *denom)
+        return Derivative(my_subs(numer, old, new), *denom)
     else:
         result = []
         for arg in expr.args:
-            result.append(my_subs(arg, old_sub_expr, new_sub_expr))
+            subs = my_subs(arg, old, new)
+            if isinstance(subs, Subs):
+                subs = subs.doit()
+            result.append(subs)
         return expr.func(*tuple(result))
 
 ################################################################################
 
 def quadrature(expr, n, weight):
+    """
+    For an input expression, substitute a quadrature formula for integrals.
+
+    Arguments:
+        expr    - (in) the expression on which to perform substitions of
+                  quadrature formulas for integrals
+        n       - (in) a Symbol object that represent the upper bound of the
+                  quadrature summation
+        weight  - (in) an IndexedBase object that represents a symbol for the
+                  quadrature weights.  The index of `weight` is significant, as
+                  it determines the index variable to be used in the quadrature
+                  formula. For example, if weight = IndexedBase('w')[k], then k
+                  will be the quadrature formula index
+
+    Returns:
+        A new expression with quadrature formulas in place of integrals
+
+    This function is separate from the apply_quadrature() function, because it
+    needs to be recursive and thus act on only one expression.
+    """
 
     # Process Integrals
     if isinstance(expr, Integral):
@@ -414,35 +451,98 @@ def quadrature(expr, n, weight):
 
 ################################################################################
 
-def apply_quadrature(expr):
+def apply_quadrature(expr, n, weights):
+    """
+    For an input expression or sequence of expressions, substitute a quadrature
+    formula for integrals.
 
-    k = Idx('k')
-    N_k = Symbol('N_k', integer=True)
-    w_k = IndexedBase('w')[k]
+    Arguments:
+        expr    - (in) the expression or sequence of expressions on which to
+                  perform substitions of quadrature formulas for integrals
+        n       - (in) a Symbol object that represent the upper bound of the
+                  quadrature summation
+        weight  - (in) an IndexedBase object that represents a symbol for the
+                  quadrature weights.  The index of `weight` is significant, as
+                  it determines the index variable to be used in the quadrature
+                  formula. For example, if weight = IndexedBase('w')[k], then k
+                  will be the quadrature formula index
 
-    return quadrature(expr, N_k, w_k)
+    Returns:
+        A new expression or sequence of expressions with quadrature formulas in
+        place of integrals
+
+    This function is separate from the quadrature() function, because it needs
+    to loop over multiple expressions, while the recursive part of the algorithm
+    is left to quadrature()
+    """
+
+    # Ensure exprs is always a list
+    if isinstance(expr, Expr):
+        exprs = [expr]
+    else:
+        exprs = list(expr)
+    num_expr = len(exprs)
+
+    # Apply quadrature to each expression
+    for i in range(num_expr):
+        exprs[i] = quadrature(exprs[i], n, weights)
+
+    # Return the results
+    if num_expr == 1:
+        exprs = exprs[0]
+    else:
+        exprs = tuple(exprs)
+    return exprs
 
 ################################################################################
 
 def substitute_derivatives(expr):
+    """
+    Substitute a simple function that represents a derivative in place of that
+    derivative within an expression.  The name of the function is derived from
+    the arguments of the derivative.
+
+    Arguments:
+        expr  - (in) an expression or a sequence of expressions to perform the
+                substitutions on
+
+    Returns:
+        A new expression or tuple of expressions with derivatives replaced by
+        functions that represent those derivatives
+    """
+
+    # Ensure exprs is always a list
+    if isinstance(expr, Expr):
+        exprs = [expr]
+    else:
+        exprs = list(expr)
+    num_expr = len(exprs)
 
     # Obtain the derivatives from the expression
     derivatives = set()
-    for arg in preorder_traversal(expr):
-        if isinstance(arg, Derivative):
-            derivatives.add(arg)
+    for expr in exprs:
+        for arg in preorder_traversal(expr):
+            if isinstance(arg, Derivative):
+                derivatives.add(arg)
 
-    # Substitute a simple function that represents a derivative
+    # For each expression, substitute a simple function that represents a
+    # derivative
     for d in derivatives:
-        num = d.args[0]
-        args = num.args
-        den = d.args[1]
+        num    = d.args[0]
+        args   = num.args
+        den    = d.args[1]
         numstr = str(num)
         denstr = str(den[0])
-        ind = numstr.find('(')
+        ind    = numstr.find('(')
         numstr = numstr[:ind]
         deriv_func = Function(numstr + "_" + denstr)(*args)
-        #expr = expr.subs(d, deriv_func)
-        expr = my_subs(expr, d, deriv_func)
+        for i in range(num_expr):
+            # exprs[i] = exprs[i].subs(d, deriv_func)
+            exprs[i] = my_subs(exprs[i], d, deriv_func)
 
-    return expr.doit()
+    # Return the results
+    if num_expr == 1:
+        exprs = exprs[0]
+    else:
+        exprs = tuple(exprs)
+    return exprs
