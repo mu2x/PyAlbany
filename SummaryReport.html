@@ -13135,14 +13135,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To complete the Statement of Work (SOW), a set of tools was chosen that are appropriate to the task: The Jupyter Notebook running Python 3, using sympy:</p>
+<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1><p>To complete the Statement of Work (SOW), a set of tools was chosen that are appropriate to the task: The Jupyter Notebook running Python 3, using sympy:</p>
 
 </div>
 </div>
@@ -13161,7 +13154,7 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><strong>Python 3</strong> Jupyter Notebooks support many languages, but Python was the first.  Python syntax is clean and easy for users to pick up, the collection of built-in and third-party libraries is extensive, and the scientific Python community is sizeable, broad and vibrant.</li>
+<li><strong>Python 3</strong> Jupyter Notebooks support many languages, but historically Python was the first.  Python syntax is clean and easy for users to pick up, the collection of built-in and third-party libraries is extensive, and the scientific Python community is sizeable, broad and vibrant.</li>
 </ul>
 
 </div>
@@ -13171,7 +13164,7 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><strong>SymPy</strong> <em>Sym</em>bolic <em>Py</em>thon is a third-party symbolic manipulation module for Python that provides the capability of manipulating PDEs in the manner prescribed by the SOW.  Specifically, it supports mathematic manipulation of derivatives, integrals, summations and a host of other mathematical objects.  It can convert LaTeX representations of mathematics into its own tree-based representation of mathematical expressions and equations, and it can convert its representation of expressions into code, valid for many different programming  languages.</li>
+<li><strong>SymPy</strong> <em>Sym</em>bolic <em>Py</em>thon is a third-party symbolic manipulation module for Python that provides the capability of manipulating PDEs in the manner prescribed by the SOW.  Specifically, it supports mathematic manipulation of derivatives, integrals, summations and a host of other mathematical objects.  It can convert its representation of expressions into code, valid for many different programming  languages.</li>
 </ul>
 
 </div>
@@ -13188,14 +13181,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="A-Note-on-Using-LaTeX-as-Input">A Note on Using LaTeX as Input<a class="anchor-link" href="#A-Note-on-Using-LaTeX-as-Input">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The <code>sympy</code> module supports an incredible range of mathematical syntax, and the Python interface for constructing PDEs quickly became quite easy to use for the purposes of this project.  However, the first task in the SOW is to provide "consultation developing a code that takes as input a description of a partial differential equation (e.g. in LaTeX syntax) ...".  This project certainly demonstrates capabilities that "[take] as input a description of a partial differential equation," but that description is <code>sympy</code> syntax, not LaTeX, as suggested in the SOW.</p>
+<p><strong>A note on using LaTeX as input:</strong> The <code>sympy</code> module supports an incredible range of mathematical syntax, and the Python interface for constructing PDEs quickly became quite easy to use for the purposes of this project.  However, the first task in the SOW is to provide "consultation developing a code that takes as input a description of a partial differential equation (e.g. in LaTeX syntax) ...".  This project certainly demonstrates capabilities that "[take] as input a description of a partial differential equation," but that description is <code>sympy</code> syntax, not LaTeX, as suggested in the SOW.</p>
 
 </div>
 </div>
@@ -13211,14 +13197,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-sympy-Module">The <code>sympy</code> Module<a class="anchor-link" href="#The-sympy-Module">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>In this report, I will demonstrate how to start with the description of a PDE using <code>sympy</code> syntax, apply the various steps of approximating it using the finite element method, and ultimately use that symbolic representation of an approximation to generate code usable in an application code such as Albany.  We begin by importing functions and classes we will need from the Python module <code>sympy</code>.  Calling the <code>init_printing()</code> function will give us nicely formatted output mathematics within this notebook.</p>
+<h1 id="The-sympy-Module">The <code>sympy</code> Module<a class="anchor-link" href="#The-sympy-Module">&#182;</a></h1><p>In this report, I will demonstrate how to start with the description of a PDE using <code>sympy</code> syntax, apply the various steps of approximating it using the finite element method, and ultimately use that symbolic representation of an approximation to generate code usable in an application code such as Albany.  We begin by importing functions and classes we will need from the Python module <code>sympy</code>.  Calling the <code>init_printing()</code> function will give us nicely formatted output mathematics within this notebook.</p>
 
 </div>
 </div>
@@ -13240,14 +13219,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-regen-Module">The <code>regen</code> Module<a class="anchor-link" href="#The-regen-Module">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The <code>regen</code> module is the Python module being developed under this project, whose goal is to start with a practical expression of a PDE (using <code>sympy</code> syntax, as we do here) and from that, perform the various steps of applying the finite element method, such as converting to the weak form, applying the Galerkin approximation, and evaluating integrals using Gaussian quadrature.</p>
+<h1 id="The-regen-Module">The <code>regen</code> Module<a class="anchor-link" href="#The-regen-Module">&#182;</a></h1><p>The <code>regen</code> module is the Python module being developed under this project, whose goal is to start with a practical expression of a PDE (using <code>sympy</code> syntax, as we do here) and from that, perform the various steps of applying the finite element method, such as converting to the weak form, applying the Galerkin approximation, and evaluating integrals using Gaussian quadrature.</p>
 
 </div>
 </div>
@@ -13268,14 +13240,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Defining-a-Model-Problem">Defining a Model Problem<a class="anchor-link" href="#Defining-a-Model-Problem">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The model problem we will be using for demonstration purposes comes from <em>Finite Elements: An Introduction, Volume I</em> by Eric B. Becker, Graham F. Carey, and J. Tinsley Oden.  In chapter 1 of that textbook, the authors develop a finite element method in the context of a model problem</p>
+<h1 id="Defining-a-Model-Problem">Defining a Model Problem<a class="anchor-link" href="#Defining-a-Model-Problem">&#182;</a></h1><p>The model problem we will be using for demonstration purposes comes from <em>Finite Elements: An Introduction, Volume I</em> by Eric B. Becker, Graham F. Carey, and J. Tinsley Oden.  In chapter 1 of that textbook, the authors develop a finite element method in the context of a model problem</p>
 
 </div>
 </div>
@@ -13348,14 +13313,15 @@ $$u{\left (x \right )} - \frac{d^{2}}{d x^{2}} u{\left (x \right )} = x$$
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Weak-Form">Weak Form<a class="anchor-link" href="#Weak-Form">&#182;</a></h1>
+<p>As should be obvious, using <code>sympy</code> within a Jupyter Notebook, allows for complex mathematical expressions to be stored as <code>sympy</code> objects and displayed in a professionally rendered fashion.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Our first goal is to obtain the weak form of our model problem.  The weak form is obtained by multiplying the PDE by a test function and integrating the result over the domain.  Typically, integration by parts is applied to reduce terms with second derivatives to first derivatives.  This reduces the smoothness requirements on both the test functions and  the basis functions that ultimately approximate the solution.</p>
+<h1 id="Weak-Form">Weak Form<a class="anchor-link" href="#Weak-Form">&#182;</a></h1><p>Our first goal is to obtain the weak form of our model problem.  The weak form is obtained by multiplying the PDE by a test function and integrating the result over the domain.  Typically, integration by parts is applied to reduce terms with second derivatives to first derivatives.  This reduces the smoothness requirements on both the test functions and  the basis functions that ultimately approximate the solution.</p>
 
 </div>
 </div>
@@ -13374,7 +13340,7 @@ $$u{\left (x \right )} - \frac{d^{2}}{d x^{2}} u{\left (x \right )} = x$$
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">Function</span><span class="p">(</span><span class="s2">&quot;v&quot;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">weak_form</span> <span class="o">=</span> <span class="n">regen</span><span class="o">.</span><span class="n">weak_form</span><span class="p">(</span><span class="n">model_prob</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">weak_form</span> <span class="o">=</span> <span class="n">regen</span><span class="o">.</span><span class="n">weak_form</span><span class="p">(</span><span class="n">model_prob</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">weak_form</span>
 </pre></div>
 
@@ -13394,7 +13360,7 @@ $$u{\left (x \right )} - \frac{d^{2}}{d x^{2}} u{\left (x \right )} = x$$
 
 
 <div class="output_latex output_subarea output_execute_result">
-$$- v{\left (x \right )} \frac{d}{d x} u{\left (x \right )} - \int x v{\left (x \right )}\, dx + \int u{\left (x \right )} v{\left (x \right )}\, dx + \int \frac{d}{d x} u{\left (x \right )} \frac{d}{d x} v{\left (x \right )}\, dx$$
+$$v{\left (0 \right )} \left. \frac{d}{d x} u{\left (x \right )} \right|_{\substack{ x=0 }} - v{\left (1 \right )} \left. \frac{d}{d x} u{\left (x \right )} \right|_{\substack{ x=1 }} - \int_{0}^{1} x v{\left (x \right )}\, dx + \int_{0}^{1} u{\left (x \right )} v{\left (x \right )}\, dx + \int_{0}^{1} \frac{d}{d x} u{\left (x \right )} \frac{d}{d x} v{\left (x \right )}\, dx$$
 </div>
 
 </div>
@@ -13414,14 +13380,7 @@ $$- v{\left (x \right )} \frac{d}{d x} u{\left (x \right )} - \int x v{\left (x 
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Galerkin-Approximation">Galerkin Approximation<a class="anchor-link" href="#Galerkin-Approximation">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>We now want to substitute an approximation for $u$ into our model problem.  Specifically, we are going to change the model problem from solving for $u_h$ instead of $u$, where</p>
+<h1 id="Galerkin-Approximation">Galerkin Approximation<a class="anchor-link" href="#Galerkin-Approximation">&#182;</a></h1><p>We now want to substitute an approximation for $u$ into our model problem.  Specifically, we are going to change the model problem to solving for $u_h$ instead of $u$, where</p>
 
 </div>
 </div>
@@ -13448,7 +13407,7 @@ $$
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>and the ${\phi_i(x)}$ are our basis functions of dimension $N$.  Note that <code>sympy</code> supports <code>IndexedBase</code> objects and <code>Function</code> objects, but not <code>Function</code>s that are indexed (at least not that I have figured out yet).  My workaround for this is to define <code>phi</code> as a <code>Function</code>, with two arguments, <code>i</code> (or <code>j</code>) and <code>x</code>.  This results in the mathematical notation $\phi(i,x)$ rather than the more traditional $\phi_i(x)$.</p>
+<p>the $\{u_i\}$ are a discrete set of solution coefficients and the ${\phi_i(x)}$ are our basis functions of dimension $N$.  Note that <code>sympy</code> supports <code>IndexedBase</code> objects and <code>Function</code> objects, but not <code>Function</code>s that are indexed (at least not that I have figured out yet).  My workaround for this is to define <code>phi</code> as a <code>Function</code>, with two arguments, <code>i</code> (or <code>j</code>) and <code>x</code>.  This results in the mathematical notation $\phi(i,x)$ rather than the more traditional $\phi_i(x)$.</p>
 
 </div>
 </div>
@@ -13487,7 +13446,7 @@ $$
 
 
 <div class="output_latex output_subarea output_execute_result">
-$$- \phi{\left (j,x \right )} \sum_{i=0}^{N - 1} \frac{d}{d x} \phi{\left (i,x \right )} {u}_{i} - \int x \phi{\left (j,x \right )}\, dx + \int \phi{\left (j,x \right )} \sum_{i=0}^{N - 1} \phi{\left (i,x \right )} {u}_{i}\, dx + \int \frac{d}{d x} \phi{\left (j,x \right )} \sum_{i=0}^{N - 1} \frac{d}{d x} \phi{\left (i,x \right )} {u}_{i}\, dx$$
+$$v{\left (0 \right )} \sum_{i=0}^{N - 1} {u}_{i} \left. \frac{d}{d x} \phi{\left (i,x \right )} \right|_{\substack{ x=0 }} - v{\left (1 \right )} \sum_{i=0}^{N - 1} {u}_{i} \left. \frac{d}{d x} \phi{\left (i,x \right )} \right|_{\substack{ x=1 }} - \int_{0}^{1} x \phi{\left (j,x \right )}\, dx + \int_{0}^{1} \phi{\left (j,x \right )} \sum_{i=0}^{N - 1} \phi{\left (i,x \right )} {u}_{i}\, dx + \int_{0}^{1} \frac{d}{d x} \phi{\left (j,x \right )} \sum_{i=0}^{N - 1} \frac{d}{d x} \phi{\left (i,x \right )} {u}_{i}\, dx$$
 </div>
 
 </div>
@@ -13499,14 +13458,14 @@ $$- \phi{\left (j,x \right )} \sum_{i=0}^{N - 1} \frac{d}{d x} \phi{\left (i,x \
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Quadrature">Quadrature<a class="anchor-link" href="#Quadrature">&#182;</a></h1>
+<h1 id="Quadrature">Quadrature<a class="anchor-link" href="#Quadrature">&#182;</a></h1><p>The $\phi(i,x)$ in the expression above are basis functions that can, in theory, take any form we wish.  In practice, we typically define piecewise polynomial basis functions, which means that the expression above has an analytic solution.  However, it is typically more efficient to "approximate" the above integrals using Gaussian quadrature, followed by choosing the number of quadrature points to represent the integral exactly.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The $\phi(i,x)$ in the expression above are basis functions that can, in theory, take any form we wish.  In practice, we typically define piecewise polynomial basis functions, which means that the expression above has an analytic solution.  However, it is typically more efficient to "approximate" the above integrals using Gaussian quadrature, followed by choosing the number of quadrature points to represent the integral exactly.</p>
 <p>As such, we now wish to convert the integrals to summations by applying Gaussian quadrature, which can be done by the <code>regen.quadrature()</code> function:</p>
 
 </div>
@@ -13517,7 +13476,7 @@ $$- \phi{\left (j,x \right )} \sum_{i=0}^{N - 1} \frac{d}{d x} \phi{\left (i,x \
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">quadrature</span> <span class="o">=</span> <span class="n">regen</span><span class="o">.</span><span class="n">quadrature</span><span class="p">(</span><span class="n">galerkin</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">quadrature</span> <span class="o">=</span> <span class="n">regen</span><span class="o">.</span><span class="n">apply_quadrature</span><span class="p">(</span><span class="n">galerkin</span><span class="p">)</span>
 <span class="n">quadrature</span>
 </pre></div>
 
@@ -13537,7 +13496,7 @@ $$- \phi{\left (j,x \right )} \sum_{i=0}^{N - 1} \frac{d}{d x} \phi{\left (i,x \
 
 
 <div class="output_latex output_subarea output_execute_result">
-$$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \frac{\partial}{\partial x} \phi{\left (i,{x}_{k} \right )} {u}_{i} - \sum_{k=0}^{N_{k} - 1} x \phi{\left (j,{x}_{k} \right )} {w}_{k} + \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \phi{\left (i,{x}_{k} \right )} {u}_{i} + \sum_{k=0}^{N_{k} - 1} \frac{\partial}{\partial x} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \frac{\partial}{\partial x} \phi{\left (i,{x}_{k} \right )} {u}_{i}$$
+$$v{\left (0 \right )} \sum_{i=0}^{N - 1} {u}_{i} \left. \frac{d}{d x} \phi{\left (i,x \right )} \right|_{\substack{ x=0 }} - v{\left (1 \right )} \sum_{i=0}^{N - 1} {u}_{i} \left. \frac{d}{d x} \phi{\left (i,x \right )} \right|_{\substack{ x=1 }} - \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} {x}_{k} + \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \phi{\left (i,{x}_{k} \right )} {u}_{i} + \sum_{k=0}^{N_{k} - 1} \frac{\partial}{\partial x} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \frac{\partial}{\partial x} \phi{\left (i,{x}_{k} \right )} {u}_{i}$$
 </div>
 
 </div>
@@ -13557,20 +13516,27 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \frac{\partial}{\partial 
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-Substitution-Bug">The Substitution Bug<a class="anchor-link" href="#The-Substitution-Bug">&#182;</a></h1>
+<h1 id="Substituting-Functions-for-Derivatives">Substituting Functions for Derivatives<a class="anchor-link" href="#Substituting-Functions-for-Derivatives">&#182;</a></h1><p>At this point in the process, I discovered what I believe is a bug in <code>sympy</code>.  The goal at this point is to massage the above expression into one that is more conducive to code generation.  The problem is the derivatives of the basis functions, e.g.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>At this point in the process, I discovered what I believe is a bug in <code>sympy</code>.  The goal at this point is to massage the above expression into one that is more conducive to code generation.  The problem is the derivatives of the basis functions, e.g.</p>
 $$
 \frac{\partial}{\partial x} \phi(i,x)
 $$<p>evaluated at discrete points $x = x_k$.  Our code will simply store an array with these values, so we want to replace these derivatives with a simple function that represents these derivatives, say</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 $$
 \phi_x(i, x_k)
-$$<p>This is the purpose of the <code>regen.substitute_derivatives()</code> function, but it does not work as expected:</p>
+$$<p>This should be achievable using the <code>subs</code> method of the <code>sympy.Expr</code> class:</p>
 
 </div>
 </div>
@@ -13580,7 +13546,8 @@ $$<p>This is the purpose of the <code>regen.substitute_derivatives()</code> func
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">regen</span><span class="o">.</span><span class="n">substitute_derivatives</span><span class="p">(</span><span class="n">quadrature</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">deriv</span> <span class="o">=</span> <span class="n">quadrature</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">deriv</span>
 </pre></div>
 
     </div>
@@ -13599,7 +13566,7 @@ $$<p>This is the purpose of the <code>regen.substitute_derivatives()</code> func
 
 
 <div class="output_latex output_subarea output_execute_result">
-$$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \frac{\partial}{\partial x} \phi{\left (i,{x}_{k} \right )} {u}_{i} - \sum_{k=0}^{N_{k} - 1} x \phi{\left (j,{x}_{k} \right )} {w}_{k} + \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \phi{\left (i,{x}_{k} \right )} {u}_{i} + \sum_{k=0}^{N_{k} - 1} \frac{\partial}{\partial x} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \frac{\partial}{\partial x} \phi{\left (i,{x}_{k} \right )} {u}_{i}$$
+$$\frac{\partial}{\partial x} \phi{\left (i,{x}_{k} \right )}$$
 </div>
 
 </div>
@@ -13607,29 +13574,14 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \frac{\partial}{\partial 
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The above expression should have regular functions substituted for the derivatives, but does not.  I demonstrate this bug, in a simpler context, in <strong><a href="http://localhost:8888/notebooks/SubstitutionBug.ipynb">this notebook</a></strong>, noting that the desired substitution works in a simpler context, but not within a summation.  I have submitted this bug as a question to Stack Overflow, and barring a response with a reasonable workaround, I will submit it as a bug to the SymPy developers.</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Given the extremely short duration of this project, I accepted this bug as an issue that would not be fixed by the project end date, and pushed ahead to further assess the project's goals.  As a temporary workaround for this problem, I will <code>print(quadrature)</code>, cut-and-paste, and then modify the expression to be what we need it to be.</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">quadrature</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">i</span><span class="p">,</span> <span class="n">x_k</span> <span class="o">=</span> <span class="n">deriv</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">args</span>
+<span class="n">i</span><span class="p">,</span> <span class="n">x_k</span>
 </pre></div>
 
     </div>
@@ -13642,13 +13594,15 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \frac{\partial}{\partial 
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[8]:</div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>-phi(j, x[k])*Sum(Derivative(phi(i, x[k]), x)*u[i], (i, 0, N - 1)) - Sum(x*phi(j, x[k])*w[k], (k, 0, N_k - 1)) + Sum(phi(j, x[k])*w[k]*Sum(phi(i, x[k])*u[i], (i, 0, N - 1)), (k, 0, N_k - 1)) + Sum(Derivative(phi(j, x[k]), x)*w[k]*Sum(Derivative(phi(i, x[k]), x)*u[i], (i, 0, N - 1)), (k, 0, N_k - 1))
-</pre>
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$\left ( i, \quad {x}_{k}\right )$$
 </div>
+
 </div>
 
 </div>
@@ -13660,32 +13614,49 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \frac{\partial}{\partial 
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="k">import</span> <span class="n">Idx</span><span class="p">,</span> <span class="n">IndexedBase</span><span class="p">,</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">Symbol</span><span class="p">,</span> <span class="n">Integral</span>
-<span class="n">N</span>     <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="n">integer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">N_k</span>   <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="s1">&#39;N_k&#39;</span><span class="p">,</span> <span class="n">integer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">i</span>     <span class="o">=</span> <span class="n">Idx</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">j</span>     <span class="o">=</span> <span class="n">Idx</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">k</span>     <span class="o">=</span> <span class="n">Idx</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N_k</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">ui</span>    <span class="o">=</span> <span class="n">IndexedBase</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>
-<span class="n">xk</span>    <span class="o">=</span> <span class="n">IndexedBase</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">w</span>     <span class="o">=</span> <span class="n">IndexedBase</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="n">phi_x</span> <span class="o">=</span> <span class="n">Function</span><span class="p">(</span><span class="s1">&#39;phi_x&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">phi_x</span> <span class="o">=</span> <span class="n">Function</span><span class="p">(</span><span class="s1">&#39;phi_x&#39;</span><span class="p">)</span>
+<span class="n">quadrature</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">deriv</span><span class="p">,</span> <span class="n">phi_x</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x_k</span><span class="p">))</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[9]:</div>
+
+
+
+
+<div class="output_latex output_subarea output_execute_result">
+$$v{\left (0 \right )} \sum_{i=0}^{N - 1} {u}_{i} \left. \frac{d}{d x} \phi{\left (i,x \right )} \right|_{\substack{ x=0 }} - v{\left (1 \right )} \sum_{i=0}^{N - 1} {u}_{i} \left. \frac{d}{d x} \phi{\left (i,x \right )} \right|_{\substack{ x=1 }} - \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} {x}_{k} + \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \phi{\left (i,{x}_{k} \right )} {u}_{i} + \sum_{k=0}^{N_{k} - 1} \frac{\partial}{\partial x} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \frac{\partial}{\partial x} \phi{\left (i,{x}_{k} \right )} {u}_{i}$$
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The above expression should have $\phi_x(i,x_k)$ substituted for $\partial \phi(i, x_k) / \partial x$, but does not.  I demonstrate this bug, in a simpler context, in <strong><a href="http://localhost:8888/notebooks/SubstitutionBug.ipynb">this notebook</a></strong>, noting that the desired substitution works in a simple expression, but not within a summation.  I submitted this bug as a question to Stack Overflow, and received a response with a reasonable workaround, which I have added to the <code>regen</code> module and incorporated into the <code>regen.substitute_derivatives()</code> function:</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">discrete</span> <span class="o">=</span> <span class="o">-</span><span class="n">phi</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">xk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">Sum</span><span class="p">(</span><span class="n">phi_x</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">xk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">ui</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> \
-<span class="n">Sum</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">phi</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">xk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">N_k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> \
-<span class="n">Sum</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">xk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">Sum</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">xk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">ui</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">N_k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> \
-<span class="n">Sum</span><span class="p">(</span><span class="n">phi_x</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">xk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">w</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">Sum</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">xk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">ui</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)),</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">N_k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">discrete</span> <span class="o">=</span> <span class="n">regen</span><span class="o">.</span><span class="n">substitute_derivatives</span><span class="p">(</span><span class="n">quadrature</span><span class="p">)</span>
 <span class="n">discrete</span>
 </pre></div>
 
@@ -13705,7 +13676,7 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \frac{\partial}{\partial 
 
 
 <div class="output_latex output_subarea output_execute_result">
-$$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \phi_{x}{\left (i,{x}_{k} \right )} {u}_{i} - \sum_{k=0}^{N_{k} - 1} x \phi{\left (j,{x}_{k} \right )} {w}_{k} + \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \phi{\left (i,{x}_{k} \right )} {u}_{i} + \sum_{k=0}^{N_{k} - 1} \phi_{x}{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \phi{\left (i,{x}_{k} \right )} {u}_{i}$$
+$$v{\left (0 \right )} \sum_{i=0}^{N - 1} \phi_{x}{\left (i,0 \right )} {u}_{i} - v{\left (1 \right )} \sum_{i=0}^{N - 1} \phi_{x}{\left (i,1 \right )} {u}_{i} - \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} {x}_{k} + \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \phi{\left (i,{x}_{k} \right )} {u}_{i} + \sum_{k=0}^{N_{k} - 1} \phi_{x}{\left (j,{x}_{k} \right )} {w}_{k} \sum_{i=0}^{N - 1} \phi_{x}{\left (i,{x}_{k} \right )} {u}_{i}$$
 </div>
 
 </div>
@@ -13717,14 +13688,7 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \phi_{x}{\left (i,{x}_{k}
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Code-Generation">Code Generation<a class="anchor-link" href="#Code-Generation">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To be added.</p>
+<p>At this point in the process, the expression should be in a suitable form for code generation.</p>
 
 </div>
 </div>
@@ -13732,14 +13696,22 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \phi_{x}{\left (i,{x}_{k}
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1>
+<h1 id="Code-Generation">Code Generation<a class="anchor-link" href="#Code-Generation">&#182;</a></h1><p>To be added.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Based on the experience obtained under this NMSBA project, I can draw the following conclusions:</p>
+<h1 id="Conclusions">Conclusions<a class="anchor-link" href="#Conclusions">&#182;</a></h1><p>Based on the experience obtained under this NMSBA project, I can draw the following conclusions:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li>The Jupyter Notebook should provide an extremely useful interface for users who would want to use the tools ultimately developed in the aftermath of this project to generate Albany <code>ModelEvaluators</code>.  It will allow these users to express their PDEs of interest, check them visually with professionally-rendered mathematics, and submit them to the series of manipulations supported by the <code>regen</code> module to ultimately generate code for use in Albany.</li>
 </ul>
@@ -13751,7 +13723,7 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \phi_{x}{\left (i,{x}_{k}
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>The <code>sympy</code> module provides the tools to successfully formulate the weak form of the PDE, apply a Galerkin approximation, and utilize Gaussian quadrature to generate an expression that is nearly ready to be used as input to the <code>sympy</code> code generation algorithms.  There is one barrier, though: the <strong><a href="http://localhost:8888/notebooks/Substitution%20Bug.ipynb">substitution bug</a></strong>.  This bug must be fixed before a fully automated system to achieve the project's goals can be achieved.</li>
+<li>The <code>sympy</code> module provides the tools to successfully formulate the weak form of the PDE, apply a Galerkin approximation, and utilize Gaussian quadrature to generate an expression that is nearly ready to be used as input to the <code>sympy</code> code generation algorithms.  This project uncovered a <strong><a href="http://localhost:8888/notebooks/Substitution%20Bug.ipynb">substitution bug</a></strong>, but a workaround was found to address the problem.</li>
 </ul>
 
 </div>
@@ -13761,7 +13733,7 @@ $$- \phi{\left (j,{x}_{k} \right )} \sum_{i=0}^{N - 1} \phi_{x}{\left (i,{x}_{k}
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>The model problem employed here is 1D, but most problems of interest will have two, three or four dimensions -- $(x,y,z,t)$ for example.  The <code>sympy</code> module certainly supports multivariate vector PDEs, via the <code>CoordSys3D</code> sub-module:</li>
+<li>The model problem employed here is 1D, but most problems of interest will have two, three or four dimensions: $(x,y,z,t)$ for example.  The <code>sympy</code> module certainly supports multivariate vector PDEs, via the <code>CoordSys3D</code> sub-module:</li>
 </ul>
 
 </div>
