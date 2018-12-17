@@ -39,25 +39,30 @@ def Eq_as_tuple(eq):
 
 ################################################################################
 
-def integrate_by_parts(u,v,x):
+def integrate_by_parts(u,v,var):
     """
     Given a user-defined u(x) and a user-defined v(x), return the three terms of
     the integration-by-parts formula in a tuple, such that the sum of the three
     terms equals zero.
     """
+    # Extract x
+    if isinstance(var, (list, tuple)):
+        x = var[0]
+    else:
+        x = var
     # Store the derivative of u*v
     duv = Derivative(u*v,x)
     # Apply the chain rule to duv
     terms = duv.doit().args
     # Return the three terms of the integration-by-parts formula.
     # The sum of these three terms equals zero
-    return (integrate(duv,x),
-            -integrate(terms[0],x),
-            -integrate(terms[1],x))
+    return (integrate(duv,var),
+            -integrate(terms[0],var),
+            -integrate(terms[1],var))
 
 ################################################################################
 
-def weak_form(eqs, v):
+def weak_form(eqs, test_func, lower_limit, upper_limit):
     """
     Given one or more sympy.Eq objects that represents a set of partial
     differential equations and test function v(x), return a tuple of sympy.Expr
@@ -66,7 +71,12 @@ def weak_form(eqs, v):
     Arguments:
         eqs  - (in) partial differential equation(s) (either sympy.Eq, or a
                tuple of sympy.Eq)
-        v    - (in) test function (sympy.Function)
+        test_func -
+               (in) test function (sympy.Function)
+        lower_limit -
+               (in) the lower limit of integration
+        upper_limit -
+               (in) the upper limit of integration
 
     Returns:
         The weak form of eqs, expressed as an expression that evaluates to zero,
@@ -95,18 +105,18 @@ def weak_form(eqs, v):
         eq = eqs[i]
         eq_tuple = Eq_as_tuple(eq)
         for term in eq_tuple:
-            result[i] += integrate(term*v,x).doit()
+            result[i] += integrate(term * test_func,
+                                   (x, lower_limit, upper_limit)).doit()
 
     # Use integration by parts to remove second derivatives
     sol_vars = insp["differentiated functions"]
     for i in range(num_eq):
         for u in sol_vars:
-            ibp = integrate_by_parts(Derivative(u,x), v, x)
+            ibp = integrate_by_parts(Derivative(u,x), test_func,
+                                     (x, lower_limit, upper_limit))
             o2_term  = ibp[2]
             o1_terms = -ibp[0] - ibp[1]
             result[i] = result[i].subs(o2_term, o1_terms)
-        # atteach the inspection to each result
-        # result[i].inspection = insp
 
     # Return the results
     if num_eq == 1:
@@ -198,7 +208,8 @@ def inspect_eqn(eq):
         if isinstance(arg, Function):
             functions.add(arg)
             for func_arg in arg.args:
-                domain_vars.add(func_arg)
+                if isinstance(func_arg, Symbol):
+                    domain_vars.add(func_arg)
         if isinstance(arg, Derivative):
             numerator    = arg.args[0]
             denominators = arg.args[1:]
@@ -352,38 +363,64 @@ def galerkin(expr, test_func, basis):
 
 ################################################################################
 
-def quadrature(expr):
+def my_subs(expr, old_sub_expr, new_sub_expr):
+    if expr == old_sub_expr:
+        return new_sub_expr
+    elif expr.args == ():
+        return expr
+    elif isinstance(expr,Derivative):
+        numer = expr.args[0]
+        denom = expr.args[1:]
+        return Derivative(my_subs(numer, old_sub_expr, new_sub_expr), *denom)
+    else:
+        result = []
+        for arg in expr.args:
+            result.append(my_subs(arg, old_sub_expr, new_sub_expr))
+        return expr.func(*tuple(result))
 
-    # Obtain the functions from the expression
-    functions = set()
-    for arg in preorder_traversal(expr):
-        if isinstance(arg, Function):
-            functions.add(arg)
+################################################################################
 
-    # Substitute function argument x_k for x
+def quadrature(expr, n, weight):
+
+    # Process Integrals
+    if isinstance(expr, Integral):
+
+        # Get the integral integrand and vars
+        integrand, vars = expr.args
+
+        # Get the integration variable
+        if isinstance(vars, Tuple):
+            x = vars[0]
+        else:
+            x = vars
+
+        # Get the quadrature points
+        k = weight.args[1]
+        x_k = IndexedBase(str(x))[k]
+
+        # Return the quadrature
+        return summation(my_subs(integrand, x, x_k) * weight, (k, 0, n-1))
+
+    # Process leaves in the expression tree
+    elif expr.args == ():
+        return expr
+
+    # Process all other expressions
+    else:
+        result = []
+        for arg in expr.args:
+            result.append(quadrature(arg, n, weight))
+        return expr.func(*tuple(result))
+
+################################################################################
+
+def apply_quadrature(expr):
+
     k = Idx('k')
-    x_k = IndexedBase('x')[k]
-    for func in functions:
-        args = func.args
-        x = args[1]
-        new_func = func.subs(x, x_k)
-        expr = expr.subs(func, new_func)
-
-    # Obtain the integrals from expression
-    integrals = set()
-    for arg in preorder_traversal(expr):
-        if isinstance(arg, Integral):
-            integrals.add(arg)
-
-    # Substitute quadrature summation for integrals
-    w_k = IndexedBase('w')[k]
     N_k = Symbol('N_k', integer=True)
-    for integ in integrals:
-        args = integ.args
-        new_sum = summation(args[0]*w_k, (k,0,N_k-1))
-        expr = expr.subs(integ, new_sum)
+    w_k = IndexedBase('w')[k]
 
-    return expr
+    return quadrature(expr, N_k, w_k)
 
 ################################################################################
 
@@ -405,6 +442,7 @@ def substitute_derivatives(expr):
         ind = numstr.find('(')
         numstr = numstr[:ind]
         deriv_func = Function(numstr + "_" + denstr)(*args)
-        expr = expr.subs(d, deriv_func)
+        #expr = expr.subs(d, deriv_func)
+        expr = my_subs(expr, d, deriv_func)
 
-    return expr
+    return expr.doit()
