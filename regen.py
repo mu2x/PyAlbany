@@ -72,7 +72,8 @@ def weak_form(eqs, test_func, lower_limit, upper_limit):
         eqs  - (in) partial differential equation(s) (either sympy.Eq, or a
                tuple of sympy.Eq)
         test_func -
-               (in) test function (sympy.Function)
+               (in) test function (sympy.Function), constructed without
+               arguments
         lower_limit -
                (in) the lower limit of integration
         upper_limit -
@@ -105,14 +106,14 @@ def weak_form(eqs, test_func, lower_limit, upper_limit):
         eq = eqs[i]
         eq_tuple = Eq_as_tuple(eq)
         for term in eq_tuple:
-            result[i] += integrate(term * test_func,
+            result[i] += integrate(term * test_func(x),
                                    (x, lower_limit, upper_limit)).doit()
 
     # Use integration by parts to remove second derivatives
     sol_vars = insp["differentiated functions"]
     for i in range(num_eq):
         for u in sol_vars:
-            ibp = integrate_by_parts(Derivative(u,x), test_func,
+            ibp = integrate_by_parts(Derivative(u,x), test_func(x),
                                      (x, lower_limit, upper_limit))
             o2_term  = ibp[2]
             o1_terms = -ibp[0] - ibp[1]
@@ -292,6 +293,29 @@ def inspect_eqns(*args):
 
 ################################################################################
 
+def extract_bounds(expr):
+    """
+    Given an expression that contains definite integrals, find the first
+    integral and return the bounds of that integral.
+
+    Argument:
+        expr  - (in) expression to be inspected
+
+    Returns:
+        A tuple containing the lower and upper bounds
+    """
+
+    args = [expr]
+    args.extend(expr.args)
+    for arg in args:
+        if isinstance(arg, Integral):
+            func, vars = arg.args
+            if len(vars) == 3:
+                return vars[1:]
+    return (None, None)
+
+################################################################################
+
 def galerkin(expr, test_func, basis):
     """
     Given a set of sympy.Expr objects, return a new set of sympy.Expr objects in
@@ -327,24 +351,29 @@ def galerkin(expr, test_func, basis):
     j = Idx('j')
     N = Symbol('N', integer=True)
 
-    # Obtained the non-test differentiated functions
-    insp = inspect_eqns(*exprs)
-    diff_funcs = list(insp["differentiated functions"])
-    try:
-        diff_funcs.remove(test_func)
-    except ValueError:
-        pass
-
     # Obtain the domain variables
+    insp = inspect_eqns(*exprs)
     x = insp["domain variables"]
     if len(x) == 1:
         x = x[0]
     else:
         raise ValueError("Only 1D problems supported. So far!")
 
+    # Obtained the non-test differentiated functions
+    diff_funcs = list(insp["differentiated functions"])
+    try:
+        diff_funcs.remove(test_func(x))
+    except ValueError:
+        pass
+
+    # Obtain the integration bounds
+    args = list(extract_bounds(exprs[0]))
+    args.append(x)
+
     # Apply the Galerkin approximation
     for k in range(num_expr):
-        exprs[k] = exprs[k].subs(test_func, basis(j,x))
+        for arg in args:
+            exprs[k] = exprs[k].subs(test_func(arg), basis(j,arg))
         for func in diff_funcs:
             name   = str(func)
             paren  = name.find('(')
@@ -359,6 +388,61 @@ def galerkin(expr, test_func, basis):
     else:
         exprs = tuple(exprs)
     return exprs
+
+################################################################################
+
+def assume_cardinal(expr, basis):
+    """
+    Given an expression o sequence of expressions that represents a Galerkin
+    approximation, including basis functions evaluated at integration bounds,
+    apply the assumption that basis functions are cardinal functions, i.e. that
+
+        phi_j(x_i) = 0,   if i not equal j, and
+        phi_j(x_i) = 1,   if i = j
+
+    where phi_j are our set of basis functions, and x_i refer to grid points.
+    This will result in a simplification of the provided expression by
+    eliminating boundary terms.  Note that if the set of j under consideration
+    was 0..N-1, the new set is 1..N-2.
+
+    Arguments:
+        expr   - (in) the expression to be inspected
+        basis  - (in) the basis function now assumed to have cardinal values
+
+    Returns:
+        A new expression, simplified under the assumption
+    """
+
+    # Ensure we are working with a tuple of expressions
+    if isinstance(expr, Expr):
+        expr = [expr]
+    else:
+        expr = list(expr)
+    num_expr = len(expr)
+
+    # Extract the bounds and functions
+    bounds = extract_bounds(expr[0])
+    funcs  = []
+    for e in expr:
+        funcs.extend(extract_funcs(e))
+
+    # Loop over the expressions and functions and make the substitutions
+    basis_name = str(basis)
+    for i in range(num_expr):
+        for func in funcs:
+            name = str(func)
+            indx = name.find('(')
+            name = name[:indx]
+            if name == basis_name:
+                args = func.args
+                for b in bounds:
+                    expr[i] = expr[i].subs(basis(args[0], b), 0)
+
+    # Return the results
+    if num_expr == 1:
+        return expr[0]
+    else:
+        return tuple(expr)
 
 ################################################################################
 
