@@ -13135,7 +13135,15 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1><p>To complete the Statement of Work (SOW), a set of tools was chosen that are appropriate to the task: The Jupyter Notebook running Python 3, using sympy:</p>
+<h1 id="Summary">Summary<a class="anchor-link" href="#Summary">&#182;</a></h1><p>A Python module, REGen, was developed that can take a symbolic description of a partial differential equation (PDE) and produce a symbolic representation of its finite element approximation.  This capability is enabled by a series of Python functions that perform the following symbolic mathematical manipulations: convert a PDE to its weak form, including the application of integration by parts; apply a Galerkin approximation; apply certain simplifications that arise from using cardinal basis functions; substitute quadrature formulae for integrals; and making some functional substitutions to enable code generation.  The Statement of Work (SOW) mentions the possibility of accepting PDEs in LaTeX syntax; this possibility was studied, but not extensively. Syntax supported by the SymPy module used in this project proved to be both easy to learn and work with.  The SOW also mentions generating code suitable for use as a <code>ModelEvaluator</code> within Albany.  The built-in SymPy code generators proved too fragile to achieve this goal in the allotted time.  The solution to this might be to develop specialized external code generators that are designed to handle the summations, basis functions, derivatives of basis functions, and other peculiarities of finite element approximations.  Experience gained in this project indicates that such code generators should be achievable with low to moderate effort.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1><p>To complete the Statement of Work (SOW), a set of tools was chosen that are appropriate to the task: The Jupyter Notebook running Python 3, using SymPy:</p>
 
 </div>
 </div>
@@ -13144,7 +13152,7 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><strong>Jupyter Notebook</strong> The goal is for users to start with a representation of a partial differential equation (PDE), and generate code that is a finite element representtion of that PDE.  As such, we want a tool that provides an interface to code but that also renders beautiful mathematics.  The Jupyter Notebook fills these requirements and much more.  Note that this summary report is generated using Jupyter Notebook.</li>
+<li><strong>Jupyter Notebook</strong> The goal is for users to start with a representation of a partial differential equation (PDE), and generate code that is a finite element representation of that PDE.  As such, we want a tool that provides an interface to code but that also renders beautiful mathematics.  The Jupyter Notebook fills these requirements and much more.  Note that this summary report is generated using Jupyter Notebook.</li>
 </ul>
 
 </div>
@@ -13154,7 +13162,7 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><strong>Python 3</strong> Jupyter Notebooks support many languages, but historically Python was the first.  Python syntax is clean and easy for users to pick up, the collection of built-in and third-party libraries is extensive, and the scientific Python community is sizeable, broad and vibrant.</li>
+<li><strong>Python 3</strong> Jupyter Notebooks support many languages, but historically Python was the first.  Python syntax is clean and easy for users to pick up, the collection of built-in and third-party libraries is extensive, and the scientific Python community is sizeable, broad and vibrant.  Python 2 is still in extensive use, but all relevant third-party libraries have long been ported to Python 3, and there is no legacy justification for using Python 2.</li>
 </ul>
 
 </div>
@@ -13164,7 +13172,7 @@ div#notebook {
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><strong>SymPy</strong> <em>Sym</em>bolic <em>Py</em>thon is a third-party symbolic manipulation module for Python that provides the capability of manipulating PDEs in the manner prescribed by the SOW.  Specifically, it supports mathematic manipulation of derivatives, integrals, summations and a host of other mathematical objects.  It can convert its representation of expressions into code, valid for many different programming  languages.</li>
+<li><strong>SymPy</strong> <em>Sym</em>bolic <em>Py</em>thon is a third-party symbolic manipulation module for Python that provides the capability of manipulating PDEs in the manner prescribed by the SOW.  Specifically, it supports mathematical manipulation of derivatives, integrals, summations and a host of other mathematical objects.  For set of simple expressions, it can convert its representation of expressions into code, valid for many different programming  languages.  Unfortunately, these existing code generators do not appear up to the task for the finite element approximations derived here.</li>
 </ul>
 
 </div>
@@ -13173,7 +13181,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>A note about this Summary Report:</strong> This report was developed within a Jupyter Notebook, which means that the code presented in the report is "live" when viewed using Jupyter Notebook.  Cell blocks preceeded by <code>In [#]:</code> where <code>#</code> is a number, are actual code, and cell blocks preceeded by <code>Out[#]:</code> are the actual output produced by the code block with the same number.  Changing the input code will change the resulting output.  For reporting purposes, this notebook will be converted to other formats -- HTML and PDF -- which will be static documents, but whose output cells will be authentic.  Using a notebook also demonstrates the professional typesetting of mathematical expressions that will be a part of the end users interface experience.</p>
+<p><strong>A note about this Summary Report:</strong> This report was developed within a Jupyter Notebook, which means that the code presented in the report is "live" when viewed using Jupyter Notebook.  Cell blocks preceeded by <code>In [#]:</code> where <code>#</code> is a number, are actual code, and cell blocks preceeded by <code>Out[#]:</code> are the actual output produced by the code block with the same number.  Changing the input code will change the resulting output.  Notably, SymPy mathematical objects can be rendered as professionally typeset mathematics within a Jupyter Notebook.  Using a notebook therefore demonstrates the typesetting of mathematical expressions that will be a part of the end users interface experience.  For reporting purposes, this notebook will be converted to other formats -- HTML and PDF -- which will be static documents, but whose output cells will be authentic.</p>
 
 </div>
 </div>
@@ -13197,7 +13205,15 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-sympy-Module">The <code>sympy</code> Module<a class="anchor-link" href="#The-sympy-Module">&#182;</a></h1><p>In this report, I will demonstrate how to start with the description of a PDE using <code>sympy</code> syntax, apply the various steps of approximating it using the finite element method, and ultimately use that symbolic representation of an approximation to generate code usable in an application code such as Albany.  We begin by importing functions and classes we will need from the Python module <code>sympy</code>.  Calling the <code>init_printing()</code> function will give us nicely formatted output mathematics within this notebook.</p>
+<p><strong>A note on code generation:</strong> Successful code generation that takes the symbolic representation of the finite element formulation of a model problem and produces C++ code that could compute that formulation was not achieved.  The <code>sympy</code> module does support code generation, but the simplest approaches appear to be somewhat fragile when attempting to convert mildly complex expressions.  Documentation for <code>sympy</code> code generation is inadequate, although very good tutorials can be found online.  The experience of this project, however, leads me to believe that successful code generation is imminently achievable with more time and resources.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="The-sympy-Module">The <code>sympy</code> Module<a class="anchor-link" href="#The-sympy-Module">&#182;</a></h1><p>In this report, I will demonstrate how to start with the description of a PDE using <code>sympy</code> syntax, apply the various steps of approximating it using the finite element method, putting it in a form that will be suitable for code generation, with the caveat that successful code generation has not been achieved yet.  We begin by importing functions and classes we will need from the Python module <code>sympy</code>.  Calling the <code>init_printing()</code> function will give us nicely formatted output mathematics within this notebook.</p>
 
 </div>
 </div>
@@ -13219,7 +13235,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="The-regen-Module">The <code>regen</code> Module<a class="anchor-link" href="#The-regen-Module">&#182;</a></h1><p>The <code>regen</code> module is the Python module being developed under this project, whose goal is to start with a practical expression of a PDE (using <code>sympy</code> syntax, as we do here) and from that, perform the various steps of applying the finite element method, such as converting to the weak form, applying the Galerkin approximation, and evaluating integrals using Gaussian quadrature.</p>
+<h1 id="The-regen-Module">The <code>regen</code> Module<a class="anchor-link" href="#The-regen-Module">&#182;</a></h1><p>The <code>regen</code> module is the Python module being developed under this project, whose goal is support algorithms that start with a practical expression of a PDE (using <code>sympy</code> syntax) and from that, perform the various steps of applying the finite element method, such as converting to the weak form, applying the Galerkin approximation, and evaluating integrals using Gaussian quadrature.</p>
 
 </div>
 </div>
@@ -13764,7 +13780,119 @@ $$- \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} {x}_{k} + \su
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Code-Generation">Code Generation<a class="anchor-link" href="#Code-Generation">&#182;</a></h1><p>To be added.</p>
+<h1 id="Code-Generation">Code Generation<a class="anchor-link" href="#Code-Generation">&#182;</a></h1><p>The <code>sympy</code> module supports code generation, however, code generation documentation at <strong><a href="https://docs.sympy.org/latest/modules/codegen.html">sympy.org</a></strong> proved to be inadequate to our purposes.  On the other hand, there are some excellent tutorials online (see this lengthy <strong><a href="https://www.youtube.com/watch?v=5jzIVp6bTy0">YouTube video</a></strong> for example), so it is possible to learn quite a bit about <code>sympy</code> code generation, but in the end, a YouTube video is not a reference along the lines that we need.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This was a very short project to begin with, and a bug in <code>sympy</code> was discovered and dealt with.  In the end, there was simply not enough time to explore the code generation issue sufficiently to get it to work.  Having said that, my experience with manipulating <code>sympy</code> expressions as a consequence of this project leads me to believe that converting expressions such as the discrete expression above to valid C++ is completely achievable.  It will simply take more time.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To illustrate the difficulty in getting code generation to work, consider that we will absolutely have to handle summations.  Consider the simplest summation one could imagine:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="k">import</span> <span class="n">Sum</span><span class="p">,</span> <span class="n">cxxcode</span>
+<span class="n">k</span> <span class="o">=</span> <span class="n">Idx</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N_k</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">w_k</span> <span class="o">=</span> <span class="n">IndexedBase</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">)[</span><span class="n">k</span><span class="p">]</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">cxxcode</span><span class="p">(</span><span class="n">Sum</span><span class="p">(</span><span class="n">w_k</span><span class="p">),</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">N_k</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ValueError:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>ValueError: specify dummy variables for w[k]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What is the dummy variable?  Isn't it <code>k</code>?  Isn't <code>k</code> fully specified with a complete range?  Both in the constructor for <code>k</code>, and in the constructor for the <code>Sum</code> object?  Obviously the error message is inadequate to fix the problem, and unfortunately, an internet search on <code>sympy</code> and <code>specify dummy variables for</code>does not yield anything useful.  Here is the full documentation string for function <code>cxxcode()</code>:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">cxxcode</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Help on function cxxcode in module sympy.printing.cxxcode:
+
+cxxcode(expr, assign_to=None, standard=&#39;c++11&#39;, **settings)
+    C++ equivalent of :func:`sympy.ccode`.
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This documentation is bare-bones at best.  It is possible that the <code>settings</code> keyword arguments might provide some option to get our expression to work, but the docstring does not provide it.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There are other capabilities within the <code>sympy</code> module that support code generation, and it might be that these other capabilities are required to generate code for summations and ultimately for our finite element formulation.</p>
 
 </div>
 </div>
@@ -13781,7 +13909,7 @@ $$- \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} {x}_{k} + \su
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>The Jupyter Notebook should provide an extremely useful interface for users who would want to use the tools ultimately developed in the aftermath of this project to generate Albany <code>ModelEvaluators</code>.  It will allow these users to express their PDEs of interest, check them visually with professionally-rendered mathematics, and submit them to the series of manipulations supported by the <code>regen</code> module to ultimately generate code for use in Albany.</li>
+<li>The Jupyter Notebook should provide an extremely useful interface for users who would want to use the tools ultimately developed in the aftermath of this project to generate Albany <code>ModelEvaluators</code>.  It will allow these users to express their PDEs of interest, check them visually with professionally-rendered mathematics, and submit them to the series of manipulations supported by the <code>regen</code> module to ultimately produce a finite element approximation to the (set of) PDE(s) and generate code for use in Albany.</li>
 </ul>
 
 </div>
@@ -13791,7 +13919,7 @@ $$- \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} {x}_{k} + \su
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>The <code>sympy</code> module provides the tools to successfully formulate the weak form of the PDE, apply a Galerkin approximation, and utilize Gaussian quadrature to generate an expression that is nearly ready to be used as input to the <code>sympy</code> code generation algorithms.  This project uncovered a <strong><a href="http://localhost:8888/notebooks/Substitution%20Bug.ipynb">substitution bug</a></strong>, but a workaround was found to address the problem.</li>
+<li>The <code>sympy</code> module provides the tools to successfully formulate the weak form of a PDE, apply a Galerkin approximation, simplify in accordance with cardinal basis functions, and utilize Gaussian quadrature to generate an expression that is nearly ready to be used as input to the <code>sympy</code> code generation algorithms.  This project uncovered a <strong><a href="http://localhost:8888/notebooks/Substitution%20Bug.ipynb">substitution bug</a></strong>, but a workaround was found to address the problem.</li>
 </ul>
 
 </div>
@@ -13809,7 +13937,7 @@ $$- \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} {x}_{k} + \su
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sympy.vector</span> <span class="k">import</span> <span class="n">CoordSys3D</span><span class="p">,</span> <span class="n">Del</span>
@@ -13829,7 +13957,7 @@ $$- \sum_{k=0}^{N_{k} - 1} \phi{\left (j,{x}_{k} \right )} {w}_{k} {x}_{k} + \su
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[12]:</div>
+    <div class="prompt output_prompt">Out[14]:</div>
 
 
 
@@ -13855,6 +13983,8 @@ $$(\mathbf{{y}_{R}} \mathbf{{z}_{R}})\mathbf{\hat{i}_{R}} + (\mathbf{{x}_{R}} \m
 <li><p><code>integrate_by_parts(u,v,x)</code> currently assumes 1D, as implied by the <code>x</code> integration argument, meaning the argument list would also change</p>
 </li>
 <li><p><code>galerkin(expr, test_func, basis)</code> currently assumes 1D basis functions, which should be expanded to multidimensional tensor-product basis functions</p>
+</li>
+<li><p><code>assume_cardinal(expr, basis)</code> assumes 1D basis functions</p>
 </li>
 <li><p><code>quadrature(expr)</code> assumes 1D integrals</p>
 </li>
@@ -13892,6 +14022,16 @@ $$(\mathbf{{y}_{R}} \mathbf{{z}_{R}})\mathbf{\hat{i}_{R}} + (\mathbf{{x}_{R}} \m
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li>An object-oriented interface would be warranted and easy to implement.  Specifically, <code>regen</code> could contain a class definition named, say, <code>PDE</code>, whose constructor would take a single PDE or a set of PDEs.  It could possibly perform conversion from LaTeX to <code>sympy</code> if needed.  It could have optional arguments providing the test functions, basis functions, and quadrature weights.  During the construction phase, the class could obtain the weak form, the Galerkin approximation, the simplification based on cardinal functions, and the discrete representation.  These expressions could be stored as attributes of the object, as could the results of the inspection of the (set of) PDE(s).  The class could also provide a method or methods for code generation, which would allow for supporting multiple output languages.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Unfortunately, I was unable to complete the final step of getting code generation to work.  My experience working with and manipulating <code>sympy</code> objects, obtained during this project, convinces me that this final step is completely achievable simply with more time.</li>
 </ul>
 
 </div>
